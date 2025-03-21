@@ -201,9 +201,17 @@ def main():
     # Exibir o botão de download da planilha logo acima do texto do sidebar
     st.sidebar.markdown(download_link(), unsafe_allow_html=True)
 
-    # Texto de inserção de dados no sidebar
-    st.sidebar.title('Insira os dados:')
     file_path = st.sidebar.file_uploader('Anexar arquivo:', type=['xlsx', 'xls'])
+
+    # Verificar se nenhum arquivo foi carregado
+    if not file_path:
+        st.markdown("""
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 80vh;">
+                <img src="data:image/svg+xml;base64,{}" alt="Ícone de Pasta" width="150"/>
+                <p style="margin-top: 10px;"><strong>Insira um arquivo<strong></p>
+            </div>
+        """.format(base64.b64encode(open('icon.svg', 'rb').read()).decode()), unsafe_allow_html=True)
+        return
 
     if file_path is not None:
         data = load_data(file_path)
